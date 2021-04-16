@@ -7,11 +7,14 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Transactions.Helpers;
+using Transactions.Services;
 
 namespace Transactions
 {
@@ -27,6 +30,7 @@ namespace Transactions
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<SqlDataContext>();
             services.AddControllers();
             services.AddSwaggerGen(
                 c =>
@@ -36,10 +40,11 @@ namespace Transactions
                     var filePath = Path.Combine(System.AppContext.BaseDirectory, "Transactions.xml");
                     c.IncludeXmlComments(filePath);
                 });
+            services.AddScoped<ITransactionsService, TransactionsService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, SqlDataContext dataContext)
         {
             app.UseSwagger();
             app.UseSwaggerUI(c =>
@@ -53,6 +58,8 @@ namespace Transactions
             }
 
             app.UseHttpsRedirection();
+
+            dataContext.Database.Migrate();
 
             app.UseRouting();
 

@@ -7,5 +7,6 @@ namespace Transactions.Models
 {
     public class TransactionsModel
     {
+        public int Id { get; set; }
     }
 }

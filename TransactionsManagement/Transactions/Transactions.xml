@@ -4,5 +4,10 @@
         <name>Transactions</name>
     </assembly>
     <members>
+        <member name="M:Transactions.Controllers.TransactionController.GetAll">
+            <summary>
+            List all transactions
+            </summary>
+        </member>
     </members>
 </doc>
