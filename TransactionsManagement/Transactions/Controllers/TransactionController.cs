@@ -24,6 +24,9 @@ namespace Transactions.Controllers
         /// <summary>
         /// List all transactions
         /// </summary>
+        /// <param name="amount">
+        /// ZAR
+        /// </param>
         [HttpGet]
         public IActionResult GetAll()
         {
@@ -34,13 +37,45 @@ namespace Transactions.Controllers
         /// <summary>
         /// Add transaction
         /// </summary>
+        /// <param name="amount">
+        /// ZAR
+        /// </param>
         [HttpPost("add")]
         public IActionResult Add([FromQuery]string description, [FromQuery]decimal amount)
         {
             try
             {
-                // create user
+                // validation
+                if (string.IsNullOrWhiteSpace(description))
+                    throw new AppException("Description is required");
+
+                // add transaction
                 _transactionsService.Add(new TransactionsModel { Description = description, Amount = amount });
+                return Ok();
+            }
+            catch (AppException ex)
+            {
+                // return error message if there was an exception
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        /// <summary>
+        /// Edit transaction
+        /// </summary>
+        /// <param name="id">
+        /// The Id is required
+        /// </param>
+        [HttpPut("edit")]
+        public IActionResult Edit([FromQuery]int id, [FromQuery]string description, [FromQuery]decimal amount)
+        {
+            try
+            {
+                if (id == 0)
+                    throw new AppException("ID is required");
+
+                // edit transaction
+                _transactionsService.Add(new TransactionsModel { Id = id, Description = description, Amount = amount });
                 return Ok();
             }
             catch (AppException ex)

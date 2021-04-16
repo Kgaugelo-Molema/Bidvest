@@ -8,11 +8,25 @@
             <summary>
             List all transactions
             </summary>
+            <param name="amount">
+            ZAR
+            </param>
         </member>
         <member name="M:Transactions.Controllers.TransactionController.Add(System.String,System.Decimal)">
             <summary>
             Add transaction
             </summary>
+            <param name="amount">
+            ZAR
+            </param>
+        </member>
+        <member name="M:Transactions.Controllers.TransactionController.Edit(System.Int32,System.String,System.Decimal)">
+            <summary>
+            Edit transaction
+            </summary>
+            <param name="id">
+            The Id is required
+            </param>
         </member>
     </members>
 </doc>

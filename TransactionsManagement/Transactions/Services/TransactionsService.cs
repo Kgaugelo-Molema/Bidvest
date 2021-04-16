@@ -12,7 +12,7 @@ namespace Transactions.Services
     {
         private SqlDataContext _context;
 
-        public TransactionsService (SqlDataContext context)
+        public TransactionsService(SqlDataContext context)
         {
             _context = context;
         }
@@ -24,20 +24,26 @@ namespace Transactions.Services
 
         public TransactionsModel Add(TransactionsModel transaction)
         {
-            // validation
-            if (string.IsNullOrWhiteSpace(transaction.Description))
-                throw new AppException("Description is required");
-
-            const string message = "Amount must consists of denominations of R5 or R10";
-            if (this.ValidateDenomination(transaction.Amount))
+            const string message = "Amount must consist of denominations of R5 or R10";
+            if (!this.ValidateDenomination(transaction.Amount))
                 throw new AppException(message);
+
+            var record = _context.Transactions.FirstOrDefault(x => x.Id == transaction.Id);
+            if (transaction.Id != 0 && record != default)
+            {
+                if (!string.IsNullOrEmpty(transaction.Description))
+                    record.Description = transaction.Description;
+
+                record.Amount = transaction.Amount;
+                _context.SaveChanges();
+                return record;
+            }
 
             _context.Transactions.Add(transaction);
             _context.SaveChanges();
 
             return transaction;
         }
-
     }
 
     public static class TransactionValidator
