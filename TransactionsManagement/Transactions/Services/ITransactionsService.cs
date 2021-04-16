@@ -6,5 +6,6 @@ namespace Transactions.Services
     public interface ITransactionsService
     {
         IEnumerable<TransactionsModel> GetAll();
+        TransactionsModel Add(TransactionsModel transaction);
     }
 }

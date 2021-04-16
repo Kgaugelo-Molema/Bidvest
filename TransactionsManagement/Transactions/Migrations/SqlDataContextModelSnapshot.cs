@@ -21,6 +21,12 @@ namespace Transactions.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("REAL");
+
                     b.HasKey("Id");
 
                     b.ToTable("Transactions");
@@ -29,3 +35,4 @@ namespace Transactions.Migrations
         }
     }
 }
+

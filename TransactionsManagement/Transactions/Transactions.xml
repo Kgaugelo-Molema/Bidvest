@@ -9,5 +9,10 @@
             List all transactions
             </summary>
         </member>
+        <member name="M:Transactions.Controllers.TransactionController.Add(System.String,System.Decimal)">
+            <summary>
+            Add transaction
+            </summary>
+        </member>
     </members>
 </doc>
