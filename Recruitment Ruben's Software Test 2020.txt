@@ -1,0 +1,22 @@
+Transaction app
+
+This application will be used to manage transactions.
+The application must have the following features:
+	. List all transactions
+	. Add a transaction
+	. Edit a transaction
+	
+A transaction consists of denominations in the currency of ZAR (Rand) e.g. R5 coin or R10 note
+
+For the persistent storage, you may either use a lightweight data base e.g. sql lite, 
+or you may use the filesystem
+
+Please feel free to use the technology for the application you feel most comfortable with e.g. MVC web based, SPA, or desktop.
+
+
+
+
+
+
+
+
