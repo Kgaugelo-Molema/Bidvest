@@ -46,7 +46,7 @@ namespace Transactions
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
-                configuration.RootPath = "ClientUI/dist";
+                configuration.RootPath = "../ClientWebUI/dist";
             });
         }
 
@@ -87,7 +87,7 @@ namespace Transactions
                 // To learn more about options for serving an Angular SPA from ASP.NET Core,
                 // see https://go.microsoft.com/fwlink/?linkid=864501
 
-                spa.Options.SourcePath = "ClientUI";
+                spa.Options.SourcePath = "../ClientWebUI";
 
                 if (env.IsDevelopment())
                 {
