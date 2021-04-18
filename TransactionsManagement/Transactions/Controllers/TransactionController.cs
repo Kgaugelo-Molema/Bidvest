@@ -61,6 +61,26 @@ namespace Transactions.Controllers
         }
 
         /// <summary>
+        /// Save transactions
+        /// </summary>
+        /// <param name="amount">
+        /// ZAR
+        /// </param>
+        [HttpPost("save")]
+        public IActionResult Save([FromBody]IEnumerable<TransactionsModel> data)
+        {
+            try
+            {
+                return Ok(data);
+            }
+            catch (AppException ex)
+            {
+                // return error message if there was an exception
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        /// <summary>
         /// Edit transaction
         /// </summary>
         /// <param name="id">

@@ -14,7 +14,7 @@ export class AppComponent implements OnInit {
   columnDefs = [
     { field: 'id', sortable: true, filter: true },
     { field: 'description', sortable: true, filter: true },
-    { field: 'amount', sortable: true, filter: true },
+    { field: 'amount', sortable: true, filter: true, editable: true },
   ];
 
   rowData = [];
@@ -25,10 +25,12 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     const self = this;
-    console.log('OnInit()');
-    let service = this.http.get(`${this.baseUrl}api/transaction`);
+    const service = this.http.get(`${this.baseUrl}api/transaction`);
     service.subscribe(data => {
       self.rowData = data as any[];
+      self.rowData.forEach(record => {
+        self.total += parseFloat(record.amount);
+      })
     }, error => console.error(error));
   }
 
@@ -84,4 +86,12 @@ export class AppComponent implements OnInit {
     });
   }
 
+  saveTransaction() {
+    const self = this;
+    const service = this.http.post(`${this.baseUrl}api/transaction/save`, this.rowData);
+    service.subscribe(data => {
+      console.log(data);
+    }, error => console.error(error));
+
+  }
 }
