@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AgGridAngular } from 'ag-grid-angular';
 
@@ -12,29 +12,24 @@ export class AppComponent implements OnInit {
   @ViewChild('agGrid', { static: true }) agGrid: AgGridAngular;
 
   columnDefs = [
-    { field: 'account_number', sortable: true, filter: true },
-    { field: 'account_type', sortable: true, filter: true },
-    { field: 'balance', sortable: true, filter: true },
-    { field: 'amount', sortable: true, filter: true, editable: true },
-    { field: 'status', sortable: true, filter: true }
+    { field: 'id', sortable: true, filter: true },
+    { field: 'description', sortable: true, filter: true },
+    { field: 'amount', sortable: true, filter: true },
   ];
 
-  rowData: any[];
+  rowData = [];
   total = 0;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string) {
   }
 
   ngOnInit() {
     const self = this;
-    let service = this.http.get('http://localhost:8080/api/accounts');
+    console.log('OnInit()');
+    let service = this.http.get(`${this.baseUrl}api/transaction`);
     service.subscribe(data => {
       self.rowData = data as any[];
-      const json = JSON.stringify(data);
-      self.rowData.forEach(record => {
-        self.total += parseFloat(record.balance);
-      });
-    });
+    }, error => console.error(error));
   }
 
   getSelectedRows() {
