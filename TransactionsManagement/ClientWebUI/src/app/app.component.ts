@@ -13,30 +13,40 @@ export class AppComponent implements OnInit {
 
   columnDefs = [
     { field: 'id', sortable: true, filter: true },
-    { field: 'description', sortable: true, filter: true },
-    { field: 'amount', sortable: true, filter: true, editable: true },
+    { field: 'description', sortable: true, filter: true, editable: true },
+    { field: 'amount', sortable: true, filter: true, editable: true, type: ['numberColumn'] },
   ];
 
   rowData = [];
   total = 0;
+  messages = '';
+  errors = '';
 
   constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string) {
   }
 
   ngOnInit() {
+    this.getTransactions();
+  }
+
+  getTransactions() {
     const self = this;
     const service = this.http.get(`${this.baseUrl}api/transaction`);
     service.subscribe(data => {
       self.rowData = data as any[];
-      self.rowData.forEach(record => {
-        self.total += parseFloat(record.amount);
-      })
+      self.calcTotal();
     }, error => console.error(error));
+  }
+
+  calcTotal() {
+    this.rowData.forEach(record => {
+      this.total += parseFloat(record.amount);
+    })
   }
 
   getSelectedRows() {
     const selectedNodes = this.agGrid.api.getSelectedNodes();
-    const selectedData = selectedNodes.map(node => node.data );
+    const selectedData = selectedNodes.map(node => node.data);
     let messages = 'Message Log\n';
     this.agGrid.api.forEachNode(node => {
       let status = '';
@@ -56,15 +66,15 @@ export class AppComponent implements OnInit {
         }
         else {
           status = 'Approved';
-          node.setDataValue('balance', balance.toFixed(2));  
+          node.setDataValue('balance', balance.toFixed(2));
         }
-        node.setDataValue('status', status);  
-      }       
+        node.setDataValue('status', status);
+      }
     });
     if (messages != 'Message Log\n')
-      alert(messages); 
+      alert(messages);
     this.getTotal();
-}
+  }
 
   sizeToFit() {
     this.agGrid.api.sizeColumnsToFit();
@@ -73,7 +83,7 @@ export class AppComponent implements OnInit {
   autoSizeAll(skipHeader) {
     const cols = this.agGrid.columnApi.getAllColumns().forEach(column => {
       this.agGrid.columnApi.autoSizeColumn(column.getColId());
-      if (column.getColId() == 'status') 
+      if (column.getColId() == 'status')
         column.setActualWidth(200);
     });
   }
@@ -86,12 +96,30 @@ export class AppComponent implements OnInit {
     });
   }
 
-  saveTransaction() {
+  addTransaction() {
+    const newTransaction = { id: 0, description: 'New Transaction', amount: 0 };
+    this.agGrid.api.insertItemsAtIndex(0, [newTransaction]);
+    this.rowData.push(newTransaction);
+  }
+
+  saveTransactions() {
     const self = this;
+    this.messages = '';
+    this.errors = '';
     const service = this.http.post(`${this.baseUrl}api/transaction/save`, this.rowData);
     service.subscribe(data => {
-      console.log(data);
-    }, error => console.error(error));
-
+      const response = data as any[];
+      response.forEach(m => {
+        if (m != null) {
+          self.messages += `\n${m.message}`;
+          console.log(m.message);
+        }
+      });
+      self.rowData = [];
+      self.getTransactions();
+    }, error => {
+      self.errors += `\n${error.message}`;
+      console.error(error.message);
+    });
   }
 }

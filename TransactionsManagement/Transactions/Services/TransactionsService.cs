@@ -24,7 +24,7 @@ namespace Transactions.Services
 
         public TransactionsModel Add(TransactionsModel transaction)
         {
-            const string message = "Amount must consist of denominations of R5 or R10";
+            const string message = "Amounts must consist denominations of R5 or R10";
             if (!this.ValidateDenomination(transaction.Amount))
                 throw new AppException(message);
 

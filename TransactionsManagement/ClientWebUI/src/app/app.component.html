@@ -329,12 +329,14 @@
 
 <div class="content" role="main">
 
-  <h2>Account List</h2>
+  <h2>Transactions</h2>
   <div class="row">
     <button class="btn btn-secondary"(click)="sizeToFit()">Size to Fit</button>&nbsp;
     <button class="btn btn-secondary"(click)="autoSizeAll(false)">Auto-Size All</button>
   </div>
-  <p>Please enter the amount and click withdraw</p>
+  <p>Add or edit transactions and save changes</p>
+  <p style="color:orange">{{messages}}</p>
+  <p style="color:red">{{errors}}</p>
   <ag-grid-angular
     #agGrid
     style="width: 100%; height: 500px;"
@@ -347,10 +349,11 @@
   </ag-grid-angular>
   <div style=width:100%>
     <div class="float-left">
-      <h3>Balance {{total}}</h3>
+      <h3>Balance ZAR{{total | number:'1.2'}}</h3>
     </div>
     <div class="float-right">
-      <button class="btn btn-primary" (click)="saveTransaction()">Save Changes</button>
+      <button class="btn btn-primary" (click)="addTransaction()">Add Row</button>
+      <button class="btn btn-primary" (click)="saveTransactions()">Save Changes</button>
     </div>
   </div>
 </div>

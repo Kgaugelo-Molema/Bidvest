@@ -8,6 +8,7 @@ using Transactions.Models;
 using Transactions.Services;
 using AutoMapper;
 using Transactions.Helpers;
+using System.Linq.Expressions;
 
 namespace Transactions.Controllers
 {
@@ -16,6 +17,8 @@ namespace Transactions.Controllers
     public class TransactionController : ControllerBase
     {
         private ITransactionsService _transactionsService;
+        private List<object> _results = new List<object>();
+
         public TransactionController(ITransactionsService transactionsService)
         {
             _transactionsService = transactionsService;
@@ -31,7 +34,17 @@ namespace Transactions.Controllers
         public IActionResult GetAll()
         {
             var transactions = _transactionsService.GetAll();
-            return Ok(transactions);
+
+            var dtos = new List<TransactionsDto>();
+            IMapper mapper;
+            foreach (var transaction in transactions)
+            {
+                // map model to dto
+                mapper = this.GetMapper<TransactionsModel, TransactionsDto>();
+                var dto = mapper.Map<TransactionsDto>(transaction);
+                dtos.Add(dto);
+            }
+            return Ok(dtos);
         }
 
         /// <summary>
@@ -50,8 +63,8 @@ namespace Transactions.Controllers
                     throw new AppException("Description is required");
 
                 // add transaction
-                _transactionsService.Add(new TransactionsModel { Description = description, Amount = amount });
-                return Ok();
+                var transaction = _transactionsService.Add(new TransactionsModel { Description = description, Amount = amount });
+                return Ok(transaction);
             }
             catch (AppException ex)
             {
@@ -67,17 +80,38 @@ namespace Transactions.Controllers
         /// ZAR
         /// </param>
         [HttpPost("save")]
-        public IActionResult Save([FromBody]IEnumerable<TransactionsModel> data)
+        public IActionResult Save([FromBody]IEnumerable<TransactionsDto> data)
         {
             try
             {
-                return Ok(data);
+                foreach (var t in data)
+                {
+                    if (t.Id == 0)
+                    {
+                        var result = Add(t.Description, decimal.Parse(t.Amount));
+                        logResult(result);
+                    }
+                    else
+                    {
+                        var result = Edit(t.Id, t.Description, decimal.Parse(t.Amount));
+                        logResult(result);
+                    }
+                }
+                return Ok(_results);
             }
             catch (AppException ex)
             {
                 // return error message if there was an exception
                 return BadRequest(new { message = ex.Message });
             }
+        }
+
+        private void logResult(IActionResult result)
+        {
+            if (result is OkObjectResult)
+                _results.Add((result as OkObjectResult)?.Value);
+            else
+                _results.Add((result as BadRequestObjectResult)?.Value);
         }
 
         /// <summary>

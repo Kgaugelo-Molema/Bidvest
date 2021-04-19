@@ -20,7 +20,7 @@
             ZAR
             </param>
         </member>
-        <member name="M:Transactions.Controllers.TransactionController.Save(System.Collections.Generic.IEnumerable{Transactions.Models.TransactionsModel})">
+        <member name="M:Transactions.Controllers.TransactionController.Save(System.Collections.Generic.IEnumerable{Transactions.Models.TransactionsDto})">
             <summary>
             Save transactions
             </summary>
