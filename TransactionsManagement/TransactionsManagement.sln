@@ -28,7 +28,7 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "ClientWebUI", "ClientWebUI\
 		SlnRelativePath = "ClientWebUI\"
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Movies", "..\..\Investec\Movies\Movies\Movies.csproj", "{2416CB95-3145-4770-8671-713CD2BB2D57}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aris.ServerTest", "..\..\ServerTest\Aris.ServerTest\Aris.ServerTest.csproj", "{38076073-8D34-44AC-9A95-B27370B1093A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -48,10 +48,10 @@ Global
 		{10375A6B-2B65-4002-8258-D6C29EA4C083}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{10375A6B-2B65-4002-8258-D6C29EA4C083}.Release|Any CPU.ActiveCfg = Debug|Any CPU
 		{10375A6B-2B65-4002-8258-D6C29EA4C083}.Release|Any CPU.Build.0 = Debug|Any CPU
-		{2416CB95-3145-4770-8671-713CD2BB2D57}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2416CB95-3145-4770-8671-713CD2BB2D57}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2416CB95-3145-4770-8671-713CD2BB2D57}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2416CB95-3145-4770-8671-713CD2BB2D57}.Release|Any CPU.Build.0 = Release|Any CPU
+		{38076073-8D34-44AC-9A95-B27370B1093A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38076073-8D34-44AC-9A95-B27370B1093A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38076073-8D34-44AC-9A95-B27370B1093A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38076073-8D34-44AC-9A95-B27370B1093A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

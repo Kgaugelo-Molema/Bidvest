@@ -9,6 +9,7 @@ using Transactions.Services;
 using AutoMapper;
 using Transactions.Helpers;
 using System.Linq.Expressions;
+using MoreLinq;
 
 namespace Transactions.Controllers
 {
@@ -97,7 +98,7 @@ namespace Transactions.Controllers
                         logResult(result);
                     }
                 }
-                return Ok(_results);
+                return Ok(_results.DistinctBy(m => m?.ToString()));
             }
             catch (AppException ex)
             {

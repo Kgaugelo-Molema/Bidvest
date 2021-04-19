@@ -329,7 +329,7 @@
 
 <div class="content" role="main">
 
-  <h2>Transactions</h2>
+  <h2>{{title}}</h2>
   <div class="row">
     <button class="btn btn-secondary"(click)="sizeToFit()">Size to Fit</button>&nbsp;
     <button class="btn btn-secondary"(click)="autoSizeAll(false)">Auto-Size All</button>
@@ -352,6 +352,7 @@
       <h3>Balance ZAR{{total | number:'1.2'}}</h3>
     </div>
     <div class="float-right">
+      <button class="btn btn-primary" (click)="getTransactions()">Reset</button>
       <button class="btn btn-primary" (click)="addTransaction()">Add Row</button>
       <button class="btn btn-primary" (click)="saveTransactions()">Save Changes</button>
     </div>

@@ -8,7 +8,7 @@ import { AgGridAngular } from 'ag-grid-angular';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  title = 'acme';
+  title = 'GPT - Transactions';
   @ViewChild('agGrid', { static: true }) agGrid: AgGridAngular;
 
   columnDefs = [
@@ -31,6 +31,7 @@ export class AppComponent implements OnInit {
 
   getTransactions() {
     const self = this;
+    this.rowData = [];
     const service = this.http.get(`${this.baseUrl}api/transaction`);
     service.subscribe(data => {
       self.rowData = data as any[];
@@ -115,7 +116,6 @@ export class AppComponent implements OnInit {
           console.log(m.message);
         }
       });
-      self.rowData = [];
       self.getTransactions();
     }, error => {
       self.errors += `\n${error.message}`;
