@@ -14,7 +14,7 @@ export class AppComponent implements OnInit {
   columnDefs = [
     { field: 'id', sortable: true, filter: true },
     { field: 'description', sortable: true, filter: true, editable: true },
-    { field: 'amount', sortable: true, filter: true, editable: true, type: ['numberColumn'] },
+    { field: 'amount', sortable: true, filter: true, editable: true, type: ['numberColumn'], headerName: 'Amount (ZAR)' },
   ];
 
   rowData = [];
@@ -45,38 +45,6 @@ export class AppComponent implements OnInit {
     })
   }
 
-  getSelectedRows() {
-    const selectedNodes = this.agGrid.api.getSelectedNodes();
-    const selectedData = selectedNodes.map(node => node.data);
-    let messages = 'Message Log\n';
-    this.agGrid.api.forEachNode(node => {
-      let status = '';
-      const amount = Number(node.data.amount);
-      if (amount == NaN || node.data.amount == undefined || node.data.amount == '') {
-        node.setDataValue('status', 'Invalid Amount!');
-      }
-      else {
-        const balance = node.data.balance - amount;
-        if (node.data.account_type == 'savings' && balance < 0) {
-          status = 'Declined';
-          messages += `\nAccount Number ${node.data.account_number} is overdrawn!`
-        }
-        else if (node.data.account_type == 'cheque' && balance < -500) {
-          status = 'Declined';
-          messages += `\nAccount Number ${node.data.account_number} has reached the maximum over draft limit!`
-        }
-        else {
-          status = 'Approved';
-          node.setDataValue('balance', balance.toFixed(2));
-        }
-        node.setDataValue('status', status);
-      }
-    });
-    if (messages != 'Message Log\n')
-      alert(messages);
-    this.getTotal();
-  }
-
   sizeToFit() {
     this.agGrid.api.sizeColumnsToFit();
   }
@@ -86,14 +54,6 @@ export class AppComponent implements OnInit {
       this.agGrid.columnApi.autoSizeColumn(column.getColId());
       if (column.getColId() == 'status')
         column.setActualWidth(200);
-    });
-  }
-
-  getTotal() {
-    const self = this;
-    this.total = 0;
-    this.agGrid.api.forEachNode(node => {
-      self.total += parseFloat(node.data.balance);
     });
   }
 

@@ -87,14 +87,20 @@ namespace Transactions.Controllers
             {
                 foreach (var t in data)
                 {
+                    if (!decimal.TryParse(t.Amount, out var amount))
+                    {
+                        logResult(BadRequest("Invalid amount entered"));
+                        continue;
+                    }
+
                     if (t.Id == 0)
                     {
-                        var result = Add(t.Description, decimal.Parse(t.Amount));
+                        var result = Add(t.Description, amount);
                         logResult(result);
                     }
                     else
                     {
-                        var result = Edit(t.Id, t.Description, decimal.Parse(t.Amount));
+                        var result = Edit(t.Id, t.Description, amount);
                         logResult(result);
                     }
                 }
